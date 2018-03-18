@@ -1,0 +1,34 @@
+body {
+	margin:0px;
+	padding:0px;
+	font-family: Arial,sans-serif;
+}
+
+#topheader .ui-corner-all{
+	border-radius: 0px;
+}
+
+#content .ui-corner-all {
+	border-radius:0px;
+}
+
+
+#content, #footer {
+	padding: 30px;
+}
+
+
+span.active {
+	color: green;
+}
+
+span.disabled {
+	color: red;
+}
+
+#footer .footer {
+	text-align:center;
+	font-size: small;
+	margin-bottom: 10px;
+	color:#4f4f4f;
+}

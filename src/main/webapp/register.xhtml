@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/templates/default.xhtml">
+
+   <ui:define name="content">
+   	<h:form>
+   		<p:panel header="Create an Account">
+			
+			<p><strong>Email: </strong>Used to send you reminders pertaining to your account. 
+			Will not be shared with third parties. If you forget your password, 
+			the password reset link will be sent to this address as well. 
+			If you do not provide an email address, you will not be able to reset your 
+			password.</p>
+			
+			<p><span>* </span>Denotes a required field.</p>
+			
+   			<h:panelGrid columns="1">
+	   			<p:outputLabel for="firstName" value="First Name"></p:outputLabel>
+	   			<p:inputText id="firstName" value="#{newUser.firstName}"></p:inputText>
+	   			<p:message for="firstName"></p:message>
+	   			
+	   			<p:outputLabel for="lastName" value="Last Name"></p:outputLabel>
+	   			<p:inputText id="lastName" value="#{newUser.lastName}"></p:inputText>
+	   			<p:message for="lastName"></p:message>
+	
+	   			<p:outputLabel for="email" value="Email"></p:outputLabel>
+	   			<p:inputText id="email" value="#{newUser.email}"></p:inputText>
+	   			<p:message for="email"></p:message>
+	
+	   			<p:outputLabel for="userName" value="User Name"></p:outputLabel>
+	   			<p:inputText id="userName" value="#{newUser.userName}" required="true"></p:inputText>
+	   			<p:message for="userName"></p:message>
+	   			
+	   			<p:outputLabel for="password" value="Password"></p:outputLabel>
+	   			<p:password id="password" value="#{registrationController.password.password}" match="password2" required="true"></p:password>
+	   			<p:message for="password"/>
+	
+	   			<p:outputLabel for="password2" value="Confirm Password"></p:outputLabel>
+	   			<p:password id="password2" value="#{registrationController.password.confirmPassword}"  required="true"></p:password>
+	   			<p:message for="password2"/>
+	   			
+	   			<p:outputLabel for="tos">
+	   				<a href="https://www.gnu.org/licenses/gpl.txt" target="_blank">I Agree to the Terms of Service</a>
+	   			</p:outputLabel>
+	   			<p:selectBooleanCheckbox id="tos" value="#{registrationController.tosAccepted}" required="true"  />
+	   			<p:spacer />
+	   			<p:commandButton value="Register" action="#{registrationController.register()}" ajax="no"></p:commandButton>
+	   			
+   		</h:panelGrid>
+   		
+   		
+   		</p:panel>
+   		
+   	</h:form>
+   </ui:define>
+</ui:composition>

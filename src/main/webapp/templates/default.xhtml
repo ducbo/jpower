@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title></title>
+	<meta charset="UTF-8"></meta>
+	<h:outputStylesheet library="css" name="default.css" />
+</h:head>
+
+<f:event listener="#{loginInfoDetails.showLoginInfo}" type="preRenderView" />
+
+<h:body>
+	
+	<div id="topheader">
+		<!-- top menu -->
+		<h:form>
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="JPowerAdmin&#160;"/>
+					<p:link value="Zones" href="/members/zones.jsf" rendered="#{facesContext.externalContext.userPrincipal.name != null}"/>
+					<h:outputText value="&#160;" />
+					<p:link value="Account Settings" href="/members/account.jsf" rendered="#{facesContext.externalContext.userPrincipal.name != null}"></p:link>
+					<h:outputText value="&#160;" />
+					<p:link value="Root Access" href="/members/accounts.jsf" rendered="#{facesContext.externalContext.isUserInRole('ROOT')}"></p:link>
+				</f:facet>
+				
+				<f:facet name="right">
+					<h:outputText value="Logged in as #{facesContext.externalContext.userPrincipal.name}" rendered="#{facesContext.externalContext.userPrincipal.name !=null}" />
+					<h:outputText value="&#160;" />
+					<p:link href="/logout" value="Logout" rendered="#{facesContext.externalContext.userPrincipal.name != null}"></p:link>
+				</f:facet>
+			
+			</p:toolbar>
+		</h:form>
+	</div>
+	<div id="content">
+		<h:form>
+			<p:messages showDetail="true" showSummary="true" autoUpdate="true" closable="true"></p:messages>
+		</h:form>
+		<ui:insert name="content"></ui:insert>
+	</div>
+	<div id="footer">
+		<ui:insert name="footer">
+			<div class="footer">
+				<p>Nicmus inc &#169; 2017</p>
+			</div>
+		</ui:insert>
+	</div>
+	<ui:debug hotkey="x"/>
+</h:body>
+
+</html> 

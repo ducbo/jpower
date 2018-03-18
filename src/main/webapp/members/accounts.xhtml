@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/templates/default.xhtml">
+    
+    
+    
+    <ui:define name="content">
+    
+	    
+	<h:form id="accountForm">
+		<p:dataTable id="accountTable" 
+			var="user" 
+			value="#{adminController.userModel}" 
+			rowKey="#{user.id}"
+			lazy="true" 
+			resizableColumns="true" 
+			paginator="true" 
+			rows="30"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+			paginatorPosition="bottom" 
+			paginatorAlwaysVisible="false">
+
+			<f:facet name="header">
+				Accounts
+			</f:facet>
+			
+			<p:column filterBy="#{user.userName}" filterMatchMode="contains" headerText="Name" sortBy="#{user.userName}">
+				<p:commandLink value="#{user.userName}" action="#{adminController.viewZone}"></p:commandLink>
+			</p:column>
+			
+			<p:column headerText="Deleted" style="text-align:center;width:6%;" sortBy="#{user.deleted}">
+				<p:inputSwitch value="#{user.deleted}">
+					<p:ajax listener="#{adminController.toggle}" update="accountTable"></p:ajax>
+				</p:inputSwitch>
+			</p:column>
+			
+			<p:column headerText="Role">
+				<ui:repeat var="r" value="#{adminController.roles}">
+					#{r.role.toString()}
+				</ui:repeat>
+			</p:column>
+			
+			<p:column headerText="Date Created" sortBy="#{user.dateCreated}">
+				<h:outputText value="#{user.dateCreated}" >
+					<f:convertDateTime type="both"  timeZone="#{userPreferences.timeZone}" locale="#{userPreferences.locale}"/>
+				</h:outputText>
+			</p:column> 
+
+			<p:column headerText="Date Modified" sortBy="#{user.dateModified}">
+				<h:outputText value="#{user.dateModified}">
+					<f:convertDateTime type="both"  timeZone="#{userPreferences.timeZone}" locale="#{userPreferences.locale}"/>
+				</h:outputText>
+			</p:column>
+	
+	
+		</p:dataTable>				
+	</h:form>
+
+    <p:spacer></p:spacer>
+
+	<h:form>    
+    <p:panel header="Zone Import">
+	    <h3>Zone Import from PowerDNS</h3>
+	    <p>Click on the Start button to import zones from PowerDNS to JPowerAdmin. 
+	    Imported zones are linked to all accounts having ROOT privileges.</p>
+    	<p:commandButton value="Start" action="#{adminController.importZones}"></p:commandButton>
+    </p:panel>
+    </h:form>
+    
+
+    </ui:define>
+    
+</ui:composition>

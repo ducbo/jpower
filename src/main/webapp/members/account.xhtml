@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/templates/default.xhtml">
+    
+    
+    
+    <ui:define name="content">
+    
+	<h:form id="userForm">
+		<p:tabView id="userPreferences">
+			<p:tab title="User Account">
+				<h:panelGrid columns="1">
+					<p:outputLabel for="firstName" value="First Name"></p:outputLabel>
+					<p:inputText id="firstName" value="#{accountController.user.firstName}"></p:inputText>
+					<p:message for="firstName"></p:message>
+					
+					<p:outputLabel for="lastName" value="Last Name"></p:outputLabel>
+					<p:inputText id="lastName" value="#{accountController.user.lastName}"></p:inputText>
+					<p:message for="lastName"></p:message>
+					
+					<p:outputLabel for="email" value="Email"></p:outputLabel>
+					<p:inputText id="email" value="#{accountController.user.email}"></p:inputText>
+					<p:message for="email" />
+					
+					<p:outputLabel for="userName" value="User Name"></p:outputLabel>
+					<p:inputText id="userName" value="#{accountController.user.userName}" readonly="true" disabled="true"></p:inputText>	
+					<p:message for="userName"></p:message>
+					
+					<p:outputLabel for="password" value="Password&#160;" >
+							<p:link value="Change" href="passwordchange.jsf"></p:link>
+					</p:outputLabel>
+					<h:inputSecret id="password" value="Nice Try But No Cigar" redisplay="true" readonly="true"/>
+					
+					<h:outputText value="Date Created" />
+					<h:outputText id="dateCreated" value="#{accountController.user.dateCreated}" >
+						<f:convertDateTime type="both" timeZone="#{userPreferences.timeZone}" locale="#{userPreferences.locale}"/>
+					</h:outputText>
+					
+					<h:outputText value="Date Modified"/>
+					<h:outputText id="dateModified" value="#{accountController.user.dateModified}">
+						 <f:convertDateTime type="both" timeZone="#{userPreferences.timeZone}" locale="#{userPreferences.locale}"/>
+					</h:outputText>
+		
+					<p:commandLink value="Delete Account" onclick="PF('accountDialogue').show();"></p:commandLink>
+					
+				</h:panelGrid>
+						
+			</p:tab>
+			<p:tab title="Locale Preferences">
+			    <h:panelGrid columns="1">
+			    	<p:outputLabel for="timeZoneId" value="TimeZone"/>
+			    	<p:selectOneMenu id="timeZoneId" value="#{userPreferences.timeZone.ID}">
+			    		<p:ajax event="change" listener="#{accountController.timeZoneChanged}"></p:ajax>
+			    		<f:selectItems value="#{timeZones}"></f:selectItems>
+			    	</p:selectOneMenu>
+			    	
+			    	<p:outputLabel for="localeId" value="Locale" />
+			    	<p:selectOneMenu id="localeId" value="#{userPreferences.localeName}">
+			    		<p:ajax event="change" listener="#{accountController.localeChanged}"/>
+			    		<f:selectItems var="locale" value="#{locales}" itemValue="#{locale.language}-#{locale.country}" itemLabel="#{locale.displayName}" />
+			    	</p:selectOneMenu>
+			    </h:panelGrid>    	
+							
+			</p:tab>			
+		</p:tabView>
+		
+		<p:commandButton value="Save Changes" action="#{accountController.save}" ajax="no"></p:commandButton>
+		
+		<p:dialog header="Confirm account removal" widgetVar="accountDialogue" modal="true">
+			<p>Enter the word "YES" in the text input field below and submit the from.</p>
+			<p:panel>
+				<h:panelGrid columns="1">
+					<p:outputLabel for="confirmDeleteBox" value="Are you sure?"></p:outputLabel>
+					<p:inputText id="confirmDeleteBox" value="#{accountController.confirmDelete}"></p:inputText>
+				</h:panelGrid>
+			</p:panel>
+			<p:commandButton value="Delete Account" action="#{accountController.delete}" ajax="no" oncomplete="PF('accountDialogue').hide();"></p:commandButton>
+			
+		</p:dialog>
+		
+	</h:form>
+
+
+    </ui:define>
+    
+</ui:composition>

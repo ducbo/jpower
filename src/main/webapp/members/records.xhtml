@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/templates/default.xhtml">
+    
+    
+    
+    <ui:define name="content">
+	
+		<f:metadata>
+			<f:viewParam name="zoneName" value="#{recordsController.zoneName}"></f:viewParam>
+			<f:viewAction action="#{recordsController.checkZone}" ></f:viewAction>
+		</f:metadata>	
+		
+		<p><p:link value="&#171; Back To Zones" outcome="zones"></p:link></p>
+		
+		<h:form id="recordForm">
+			<p:dataTable id="recordTable" 
+			var="record" 
+			value="#{recordsController.lazyModel}" 
+			rowKey="#{record.id}"
+			lazy="true" 
+			resizableColumns="true" 
+			selection="#{recordsController.selectedRecords}" 
+			rowSelectMode="checkbox" 
+			paginator="true" 
+			rows="30" 
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+			paginatorPosition="bottom" 
+			paginatorAlwaysVisible="false">
+
+				<f:facet name="header">
+					Records for #{selectedDomain.name}
+				</f:facet>
+				
+				<p:column selectionMode="multiple" style="text-align:center;width:4%;">
+				</p:column>
+				
+				<p:column headerText="Status" sortBy="#{record.active}" style="text-align:center;width:6%;">
+					<p:inputSwitch value="#{record.active}">
+						<p:ajax listener="#{recordsController.toggle}" update="recordTable"></p:ajax>					
+					</p:inputSwitch>
+				</p:column>
+				
+				<p:column headerText="Name" sortBy = "#{record.name}" filterBy="#{record.name}" 
+					filterMatchMode="contains" style="width:20%;">
+					#{record.name}
+				</p:column>
+				
+				<p:column headerText="Type" sortBy="#{record.type}" style="width:6%;">
+					#{record.type}
+				</p:column>
+				
+				<p:column headerText="Prio" style="width:3%;">
+					#{record.prio}
+				</p:column>
+			 	
+				<p:column headerText="Points to" sortBy="#{record.content}" style="width:30%;">
+					#{record.content}
+				</p:column>
+				
+				<p:column headerText="TTL" style="width:3%;">
+					#{record.ttl}
+				</p:column>
+				
+				<p:column headerText="Date Created" sortBy="#{record.dateCreated}" style="width:14%;">
+					<h:outputText value="#{record.dateCreated}" >
+						<f:convertDateTime type="both" 
+							timeZone="#{userPreferences.timeZone}" 
+							locale="#{userPreferences.locale}"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Date Modified" sortBy="#{record.dateModified}" style="width:14%;">
+					<h:outputText value="#{record.dateModified}" >
+						<f:convertDateTime type="both" timeZone="#{userPreferences.timeZone}" locale="#{userPreferences.locale}"/>
+					</h:outputText>
+				</p:column>
+				
+				<f:facet name="footer">
+					<p:commandButton process="recordTable" update=":recordForm:recordsToDelete" 
+						icon="ui-icon-close" value="Delete Selected" 
+						oncomplete="PF('recordsDialogue').show();">
+					</p:commandButton>
+				</f:facet>
+				
+			</p:dataTable>
+			
+			<p:dialog header="Confirm Delete" modal="true" widgetVar="recordsDialogue">
+				<p:outputPanel id="recordsToDelete">
+					<p:scrollPanel mode="native" 
+						style="height:200px;">
+							<ui:repeat 	var="record" value="#{recordsController.selectedRecords}">
+							<h:outputText value="#{record.name} #{record.type} #{record.content}" style="display:block;">
+							</h:outputText>
+						</ui:repeat>
+					</p:scrollPanel>
+					<p:commandButton value="Confirm Delete" action="#{recordsController.deleteSelected}" icon="ui-icon-close" oncomplete="PF('recordsDialogue').hide();" update=":recordForm:recordTable"></p:commandButton>
+				</p:outputPanel>
+			</p:dialog>
+			
+		</h:form>
+		
+		<p:separator></p:separator>
+		
+		<h:form>
+			<p:panel header="Create Record">
+				<h:panelGrid columns="1">
+					<p:outputLabel for="name">Name</p:outputLabel>
+					<p:inputText id="name" value="#{newRecord.name}"></p:inputText>
+					
+					<p:outputLabel for="type">Type</p:outputLabel>
+					<p:selectOneMenu value="#{newRecord.type}" id="type" requiredMessage="true">
+						<f:selectItems value="#{recordTypes}"></f:selectItems>
+					</p:selectOneMenu>
+					
+					<p:outputLabel for="ttl">Time to Live</p:outputLabel>
+					<p:inputText id="ttl" value="#{newRecord.ttl}" required="true"></p:inputText>
+					
+					<p:outputLabel for="prio" >Priority</p:outputLabel>
+					<p:inputText id="prio" value="#{newRecord.prio}" required="true"></p:inputText>
+
+					<p:outputLabel for="content">Content</p:outputLabel>
+					<p:inputText id="content" value="#{newRecord.content}" required="true"></p:inputText>
+					<p:spacer></p:spacer>
+					<p:commandButton value="Create" action="#{recordsController.addRecord}" ajax="no"></p:commandButton>
+				</h:panelGrid>
+			</p:panel>
+					
+		</h:form>
+	</ui:define>
+
+</ui:composition>

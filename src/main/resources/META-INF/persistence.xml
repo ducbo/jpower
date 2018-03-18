@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (C) 2017 nicmus inc. (jivko.sabev@gmail.com)
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<persistence version="2.1"
+   xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+        http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+   
+   <persistence-unit name="JPowerAdmin" transaction-type="JTA">
+      <jta-data-source>java:jboss/datasources/JPowerAdminDSXA</jta-data-source>
+      <class>com.nicmus.jpoweradmin.model.orm.User</class>
+      <class>com.nicmus.jpoweradmin.model.orm.Role</class>
+      <class>com.nicmus.jpoweradmin.model.orm.LoginHistory</class>
+      <class>com.nicmus.jpoweradmin.model.orm.PasswordResets</class>
+      <class>com.nicmus.jpoweradmin.model.orm.Domain</class>
+      <class>com.nicmus.jpoweradmin.model.orm.Record</class>
+      <class>com.nicmus.jpoweradmin.model.orm.PersistentObject</class>
+      <exclude-unlisted-classes>true</exclude-unlisted-classes>
+      <properties>
+         <!-- Properties for Hibernate -->
+<!--          <property name="hibernate.hbm2ddl.auto" value="create" /> -->
+         <property name="hibernate.show_sql" value="true" />
+      </properties>
+      
+   </persistence-unit>
+   
+   <persistence-unit name="pdns" transaction-type="JTA">
+   	<jta-data-source>java:jboss/datasources/PowerDNSDSXA</jta-data-source>
+   	<class>com.nicmus.pdns.model.orm.Zone</class>
+   	<class>com.nicmus.pdns.model.orm.ZoneRecord</class>
+   	<exclude-unlisted-classes>true</exclude-unlisted-classes>
+   	<properties>
+<!--         <property name="hibernate.hbm2ddl.auto" value="create" /> -->
+   		<property name="hibernate.show_sql" value="true" />
+   		<property name="hibernate.id.new_generator_mappings" value="false"/>
+   	</properties>   	
+   </persistence-unit>
+   
+</persistence>

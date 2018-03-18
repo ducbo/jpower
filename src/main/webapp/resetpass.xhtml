@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/templates/default.xhtml">
+
+   <ui:define name="content">
+   
+  	<f:metadata>
+		<f:viewParam name="id" value="#{forgottenPasswordController.id}"></f:viewParam>
+		<f:viewAction action="#{forgottenPasswordController.checkId}" ></f:viewAction>
+	</f:metadata>	
+   
+   	
+   	<h:form rendered="#{!forgottenPasswordController.validId}">
+   		<p:panel header="Request Password Reset link">
+			<p>Enter the user name for the account you wish to have the password reset.</p>
+			<p>The password reset link is sent to the email associated with the user account.</p>
+			
+			<h:panelGrid columns="1">
+				<p:outputLabel for="userName" value="User Name"></p:outputLabel>
+				<p:inputText id="userName" value="#{forgottenPasswordController.accountName}" requiredMessage="true"></p:inputText>
+			</h:panelGrid>
+   		</p:panel>
+   		<p:commandButton value="Get Link" action="#{forgottenPasswordController.requestPasswordResetToken}" ajax="no"></p:commandButton>
+   	</h:form>
+   	
+   	<h:form rendered="#{forgottenPasswordController.validId}">
+   		
+   		<p:panel header="Password Reset">
+			<p>Choose a strong password!</p>
+			
+			<h:panelGrid columns="1">
+			
+				<p:outputLabel for="password" value="Password"></p:outputLabel>
+				<p:password id="password" value="#{forgottenPasswordController.password.password}" redisplay="true" match="confirmPass" required="true"></p:password>
+				
+				<p:outputLabel for="confirmPass" value="Confirm Password"></p:outputLabel>
+				<p:password id="confirmPass" value="#{forgottenPasswordController.password.confirmPassword}" redisplay="true" required="true"></p:password>
+			</h:panelGrid>
+				   		
+   		</p:panel>
+   		<p:commandButton action="#{forgottenPasswordController.reset}" value="Reset Password" ajax="no">
+   			<f:param name="id" value="#{forgottenPasswordController.id}"></f:param>
+   		</p:commandButton>   		
+   	</h:form>
+   </ui:define>
+</ui:composition>

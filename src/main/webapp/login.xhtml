@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>Sign In</title>
+    </h:head>
+            
+    <h:body>
+        <p:panel style="text-align:center;">
+        <f:facet name="header">
+        	<h:outputText value="JPowerAdmin Login" />
+        </f:facet>
+            <form method="POST" action="#{request.contextPath}/checklogin">
+            	<h:panelGrid columns="1" style="text-align:left;margin: 0 auto;">
+            		<p:outputLabel for="j_username" value="User Name"></p:outputLabel>
+            		<p:inputText id="j_username"></p:inputText>
+
+            		<p:outputLabel for="j_password" value="Password"></p:outputLabel>
+            		<p:password id="j_password"></p:password>
+            		
+	                <input type="submit" value="Login" />
+	                <p:link href="/resetpass.jsf" value="Forgotten Password"></p:link>
+	                <p:link href="/register.jsf" value="Create an Account"></p:link>
+            	</h:panelGrid>
+            </form>
+        </p:panel>
+        
+    </h:body>
+</html>
